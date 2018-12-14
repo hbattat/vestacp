@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mkdir -p /root/docker_vols/vestacp/{vesta,home,backup}
+mkdir -p /root/docker_vols/vestacp/{mysql,home,backup}
 
 docker pull hbattat/vestacp
 
