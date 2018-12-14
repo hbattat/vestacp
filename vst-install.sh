@@ -75,7 +75,8 @@ rm -rf /home/*/conf/web/nginx.*.conf_letsencrypt/
 
 
 # Change data dir of mysql
-sed -i 's/^datadir=\/var\/lib\/mysql/datadir=\/mysql/g' /etc/mysql/my.cnf
+sudo ln -s /mysql /var/lib/mysql
+chmod -R 777 /mysql
 service mysql restart
 
 
