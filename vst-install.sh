@@ -71,7 +71,7 @@ service nginx restart
 
 
 # Clean up any old letsencrypt nginx challenge
-rm -rf /home/*/conf/web/nginx.*.conf_letsencrypt/
+rm -rf /home/*/conf/web/nginx.*.conf_letsencrypt
 
 
 # Change data dir of mysql
