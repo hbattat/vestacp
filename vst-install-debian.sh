@@ -19,11 +19,6 @@ codename="$(cat /etc/os-release |grep VERSION= |cut -f 2 -d \(|cut -f 1 -d \))"
 vestacp="$VESTA/install/$VERSION/$release"
 
 if [ "$release" -eq 9 ]; then
-    apt-get install -y apt-transport-https lsb-release ca-certificates
-    wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-    sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
-    apt-get update
-
     software="nginx apache2 apache2-utils apache2-suexec-custom
         libapache2-mod-ruid2 libapache2-mod-fcgid libapache2-mod-php php
         php-common php-cgi php-mysql php-curl php-fpm php-pgsql awstats
@@ -33,7 +28,7 @@ if [ "$release" -eq 9 ]; then
         mysql-client postgresql postgresql-contrib phppgadmin phpmyadmin mc
         flex whois rssh git idn zip sudo bc ftp lsof ntpdate rrdtool quota
         e2fslibs bsdutils e2fsprogs curl imagemagick fail2ban dnsutils
-        bsdmainutils cron vesta vesta-nginx php expect libmail-dkim-perl
+        bsdmainutils cron vesta vesta-nginx vesta-php expect libmail-dkim-perl
         unrar-free vim-common vesta-ioncube vesta-softaculous net-tools"
 elif [ "$release" -eq 8 ]; then
     software="nginx apache2 apache2-utils apache2.2-common
@@ -907,9 +902,9 @@ fi
 
 if [ "$phpfpm" = 'yes' ]; then
     if [ "$release" -eq 9 ]; then
-        cp -f $vestacp/php-fpm/www.conf `find /etc/php/ -maxdepth 4 -type f -name '*www.conf*' -print -quit`
-        update-rc.d `find /etc/init.d/ -maxdepth 1 -type f -name '*7.2*' -printf "%f\n" -quit` defaults
-        service `find /etc/init.d/ -maxdepth 1 -type f -name '*7.2*' -printf "%f\n" -quit` start
+        cp -f $vestacp/php-fpm/www.conf /etc/php/7.0/fpm/pool.d/www.conf
+        update-rc.d php7.0-fpm defaults
+        service php7.0-fpm start
         check_result $? "php-fpm start failed"
     else
         cp -f $vestacp/php5-fpm/www.conf /etc/php5/fpm/pool.d/www.conf
@@ -1223,7 +1218,6 @@ if [ "$fail2ban" = 'yes' ]; then
         fline=$(echo "$fline" |grep enabled |tail -n1 |cut -f 1 -d -)
         sed -i "${fline}s/false/true/" /etc/fail2ban/jail.local
     fi 
-    touch /var/log/auth.log
     update-rc.d fail2ban defaults
     service fail2ban start
     check_result $? "fail2ban start failed"

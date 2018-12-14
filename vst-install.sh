@@ -2,7 +2,7 @@
 
 if [ -f "already_ran" ]; then
     echo "Already ran the Entrypoint once. Holding indefinitely for debugging."
-    service vesta start && service nginx restart
+    service vesta start && service nginx restart && serivce mysql restart
     cat
 fi
 touch already_ran
@@ -58,27 +58,29 @@ bash vst-install-debian.sh --nginx yes --apache yes --phpfpm no --named yes --re
 
 
 # Add vestacp redirect template
-cp /vestacp-redirect.tpl /usr/local/vesta/data/templates/web/nginx/
-cp /vestacp-redirect.stpl /usr/local/vesta/data/templates/web/nginx/
-
-service nginx restart
-
-# Create an SSL and change template for cp domain
-#export VESTA=/usr/local/vesta/
-#touch /root/.rnd
-#/usr/local/vesta/bin/v-add-letsencrypt-user admin
-#challenge=`cat /usr/local/vesta/data/users/admin/ssl/le.conf | sed -En "s/THUMB='(.*)'/\1/gp"`
-#sed -i -e "s/return 200 \".*\";/return 200 \""'$1'".$challenge\";/g" /home/admin/conf/web/nginx.${HOSTNAME}.conf_letsencrypt
-#/usr/local/vesta/bin/v-add-letsencrypt-domain admin ${HOSTNAME}
-
-
-# Can't apply it due to a bug in vestacp, has to be switched manually
-#/usr/local/vesta/bin/v-change-web-domain-proxy-tpl admin ${HOSTNAME} default
-#/usr/local/vesta/bin/v-change-web-domain-proxy-tpl admin ${HOSTNAME} vestacp-redirect
-
+cp /templates/web/nginx/vestacp-redirect.tpl /usr/local/vesta/data/templates/web/nginx/
+cp /templates/web/nginx/vestacp-redirect.stpl /usr/local/vesta/data/templates/web/nginx/
 
 # Add force https template
-(cd /usr/local/vesta/data/templates/web && wget http://c.vestacp.com/0.9.8/rhel/force-https/nginx.tar.gz && tar -xzvf nginx.tar.gz && rm -f nginx.tar.gz)
+cp /templates/web/nginx/force-https.tpl /usr/local/vesta/data/templates/web/nginx/
+cp /templates/web/nginx/force-https.stpl /usr/local/vesta/data/templates/web/nginx/
+
+
+# Restart nginx
+service nginx restart
+
+
+# Clean up any old letsencrypt nginx challenge
+rm -rf /home/*/conf/web/nginx.*.conf_letsencrypt/
+
+
+# Change data dir of mysql
+sed -i 's/^datadir=\/var\/lib\/mysql/datadir=\/mysql/g' /etc/mysql/my.cnf
+service mysql restart
+
+
+# Install PHP FPM
+bash vst-install-php.sh
 
 
 # Hang
