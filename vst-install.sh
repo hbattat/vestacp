@@ -76,6 +76,7 @@ rm -rf /home/*/conf/web/nginx.*.conf_letsencrypt/
 
 # Change data dir of mysql
 service mysql stop
+cp -rn /var/lib/mysql/* /mysql/
 rm -rf /var/lib/mysql
 sudo ln -s /mysql /var/lib/mysql
 chmod -R 777 /mysql
