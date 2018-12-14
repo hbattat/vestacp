@@ -78,10 +78,10 @@ rm -rf /home/*/conf/web/nginx.*.conf_letsencrypt/
 service mysql stop
 cp -rn /var/lib/mysql/* /mysql/
 rm -rf /var/lib/mysql
-sudo ln -s /mysql /var/lib/mysql
+ln -s /mysql /var/lib/mysql
 chmod -R 777 /mysql
 rm -rf /mysql/ib_logfile*
-service mysql restart
+service mysql start
 
 
 # Install PHP FPM
