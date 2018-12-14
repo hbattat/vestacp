@@ -57,9 +57,15 @@ fi
 bash vst-install-debian.sh --nginx yes --apache yes --phpfpm no --named yes --remi yes --vsftpd no --proftpd no --iptables yes --fail2ban yes --quota no --exim yes --dovecot yes --spamassassin yes --clamav yes --softaculous no --mysql yes --postgresql no --hostname ${HOSTNAME} --email ${ADMIN_EMAIL} --password ${ADMIN_PASSWORD} -y no
 
 
-# Add vestacp redirect template
-cp /templates/web/nginx/vestacp-redirect.tpl /usr/local/vesta/data/templates/web/nginx/
-cp /templates/web/nginx/vestacp-redirect.stpl /usr/local/vesta/data/templates/web/nginx/
+# setup vestacp ssl
+rm -rf /usr/local/vesta/ssl/certificate.*
+export VESTA=/usr/local/vesta/
+touch /root/.rnd
+/usr/local/vesta/bin/v-add-letsencrypt-user admin
+/usr/local/vesta/bin/v-add-letsencrypt-domain admin ${HOSTNAME}
+ln -s /usr/local/vesta/data/users/admin/ssl/${HOSTNAME}.key /usr/local/vesta/ssl/certificate.key
+ln -s /usr/local/vesta/data/users/admin/ssl/${HOSTNAME}.key /usr/local/vesta/ssl/certificate.crt
+
 
 # Add force https template
 cp /templates/web/nginx/force-https.tpl /usr/local/vesta/data/templates/web/nginx/
