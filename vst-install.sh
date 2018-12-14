@@ -53,6 +53,10 @@ if [ ! -z "$(grep ^admin: /etc/group)" ] && [ -z "$1" ]; then
 fi
 
 
+# Clean up any config
+rm -rf /home/*/conf
+
+
 # Install VestaCP
 bash vst-install-debian.sh --nginx yes --apache yes --phpfpm no --named yes --remi yes --vsftpd no --proftpd no --iptables yes --fail2ban yes --quota no --exim yes --dovecot yes --spamassassin yes --clamav yes --softaculous no --mysql yes --postgresql no --hostname ${HOSTNAME} --email ${ADMIN_EMAIL} --password ${ADMIN_PASSWORD} -y no
 
@@ -64,10 +68,6 @@ cp /templates/web/nginx/force-https.stpl /usr/local/vesta/data/templates/web/ngi
 
 # Restart nginx
 service nginx restart
-
-
-# Clean up any old letsencrypt nginx challenge
-rm -rf /home/*/conf/web/nginx.*.conf_letsencrypt
 
 
 # Change data dir of mysql
