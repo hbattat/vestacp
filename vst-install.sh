@@ -2,7 +2,7 @@
 
 if [ -f "already_ran" ]; then
     echo "Already ran the Entrypoint once. Holding indefinitely for debugging."
-    service vesta start && service nginx restart && serivce mysql restart
+    service vesta restart && service nginx restart && service apache2 restart && serivce mysql restart
     cat
 fi
 touch already_ran
@@ -75,8 +75,11 @@ rm -rf /home/*/conf/web/nginx.*.conf_letsencrypt/
 
 
 # Change data dir of mysql
+service mysql stop
+rm -rf /var/lib/mysql
 sudo ln -s /mysql /var/lib/mysql
 chmod -R 777 /mysql
+rm -rf /mysql/ib_logfile*
 service mysql restart
 
 
