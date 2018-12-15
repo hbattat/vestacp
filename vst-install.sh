@@ -54,7 +54,7 @@ fi
 
 
 # Clean up any config
-rm -rf /home/*/conf
+rm -rf /home/*/conf/*/*
 
 
 # Install VestaCP
