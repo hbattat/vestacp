@@ -2,6 +2,7 @@ FROM debian
 COPY vst-install.sh /vst-install.sh
 COPY vst-install-debian.sh /vst-install-debian.sh
 COPY vst-install-php.sh /vst-install-php.sh
+COPY nodejs_tpl.sh /nodejs_tpl.sh
 COPY templates /templates
 CMD ["/vst-install.sh"]
 

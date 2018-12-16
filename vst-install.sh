@@ -66,6 +66,10 @@ cp /templates/web/nginx/force-https.tpl /usr/local/vesta/data/templates/web/ngin
 cp /templates/web/nginx/force-https.stpl /usr/local/vesta/data/templates/web/nginx/
 
 
+# Modify v-change-web-domain-proxy-tpl
+sed -i 's/^exit$/\/nodejs_tpl.sh \$1 \$2\nexit/' /usr/local/vesta/bin/v-change-web-domain-proxy-tpl
+
+
 # Restart nginx
 service nginx restart
 
