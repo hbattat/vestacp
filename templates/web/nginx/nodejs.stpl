@@ -1,4 +1,4 @@
-erver {
+server {
     listen      %ip%:%proxy_ssl_port%;
     server_name %domain_idn% %alias_idn%;
     ssl         on;
