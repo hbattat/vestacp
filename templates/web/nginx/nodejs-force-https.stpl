@@ -21,18 +21,11 @@ server {
         proxy_set_header Host $host;
         proxy_cache_bypass $http_upgrade;
 
-
-        try_files $uri $uri/ @rewrites;
-
         location ~* ^.+\.(%proxy_extentions%)$ {
             access_log     /var/log/%web_system%/domains/%domain%.log combined;
             access_log     /var/log/%web_system%/domains/%domain%.bytes bytes;
             expires        max;
         }
-    }
-
-    location @rewrites {
-      rewrite ^(.+)$ /index.html last;
     }
 
     location /error/ {
