@@ -61,9 +61,8 @@ rm -rf /home/*/conf/*/*
 bash vst-install-debian.sh --nginx yes --apache yes --phpfpm no --named yes --remi yes --vsftpd no --proftpd no --iptables yes --fail2ban yes --quota no --exim yes --dovecot yes --spamassassin yes --clamav yes --softaculous no --mysql yes --postgresql no --hostname ${HOSTNAME} --email ${ADMIN_EMAIL} --password ${ADMIN_PASSWORD} -y no
 
 
-# Add force https template
-cp /templates/web/nginx/force-https.tpl /usr/local/vesta/data/templates/web/nginx/
-cp /templates/web/nginx/force-https.stpl /usr/local/vesta/data/templates/web/nginx/
+# Copy templates
+cp -r /templates/web/nginx/* /usr/local/vesta/data/templates/web/nginx/
 
 
 # Modify v-change-web-domain-proxy-tpl
