@@ -2,8 +2,7 @@
 
 if [ -f "already_ran" ]; then
     echo "Already ran the Entrypoint once. Holding indefinitely for debugging."
-    service vesta restart && service nginx restart && service apache2 restart && serivce mysql restart
-    cat
+    for i in vesta apache2 nginx bind9 exim4 dovecot clamav-daemon spamassassin mysql cron iptables fail2ban; do service $i restart; done
 fi
 touch already_ran
 
@@ -56,6 +55,8 @@ fi
 # Clean up any config
 rm -rf /home/*/conf/*/*
 
+# Fix fail2ban
+touch /var/log/auth.log
 
 # Install VestaCP
 bash vst-install-debian.sh --nginx yes --apache yes --phpfpm no --named yes --remi yes --vsftpd no --proftpd no --iptables yes --fail2ban yes --quota no --exim yes --dovecot yes --spamassassin yes --clamav yes --softaculous no --mysql yes --postgresql no --hostname ${HOSTNAME} --email ${ADMIN_EMAIL} --password ${ADMIN_PASSWORD} -y no
