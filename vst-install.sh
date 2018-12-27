@@ -3,6 +3,7 @@
 if [ -f "already_ran" ]; then
     echo "Already ran the Entrypoint once. Holding indefinitely for debugging."
     for i in vesta apache2 nginx bind9 exim4 dovecot clamav-daemon spamassassin mysql cron iptables fail2ban; do service $i restart; done
+    cat
 fi
 touch already_ran
 
