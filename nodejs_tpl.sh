@@ -6,7 +6,7 @@ nodejs_hostname=`/usr/local/vesta/bin/v-list-web-domain $user $domain | grep "PR
 port_num=`/usr/local/vesta/bin/v-list-web-domain $user $domain | grep "PROXY EXT" | sed -r 's/.*nodejs_(.*)_([0-9]+).*/\2/g'`
 
 re='^[0-9]+$'
-if ! [[ $port_number =~ $re ]]
+if [[ $port_num =~ $re ]]
 then
   nc -vz -w1 $nodejs_hostname $port_num &>/dev/null
   if [[ "$?" -eq "0" ]]
